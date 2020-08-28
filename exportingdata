@@ -2,6 +2,9 @@ import operator
 import time
 import datetime
 
+ymd = "2020-08-14 "
+
+
 fileName = "C:\\Users\\Jackson\Documents\\VS Code\\ShooterGamingData.txt"
 f = open(fileName , 'r') 
 
@@ -23,20 +26,25 @@ for i in text:
         if operator.contains(i, "Heartrate"):
             Heartrate2 = i.split(": ")
             Heartrate = Heartrate2[1]
-            print("H" + Heartrate)
+            print("H = " + Heartrate)
             measuredTime2 = i.split("->")
             measuredTime = measuredTime2[0]
             if measuredTime == 0:
-                next
-            print("T" + measuredTime)
+                continue
+            print("T = " + measuredTime)
         if operator.contains(i, "Blood Oxygen"):
             BloodOxygen2 = i.split(": ")
             BloodOxygen = BloodOxygen2[1]
-            print("B" + BloodOxygen)
+            print("B = " + BloodOxygen)
+        if measuredTime == 0:
+            continue
 
-
-        print(str(measuredTime))
-        query = "insert into stress values(" + str(z) + "," + str(Heartrate) + "," + str(BloodOxygen) + "," + datetime.datetime.str(measuredTime).strftime('%H:%M:%S.%f') + "," + "1)"
+        measuredTime = measuredTime.strip()
+        result = ymd+str(measuredTime)
+        result = "'" + str(datetime.datetime.fromisoformat(result)) + "'"
+    
+        print(ymd+str(measuredTime))
+        query = "insert into stress values(" + str(z) + "," + str(Heartrate).strip('\n') + "," + str(BloodOxygen) + "," + result+ "," + "1)"
         print(query)
         cursor.execute(query)
         cnx.commit()
